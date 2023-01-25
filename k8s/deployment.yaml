@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conv-temp
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: conv-temp
+  template:
+    metadata:
+      labels:
+        app: conv-temp
+    spec:
+      containers:
+        - name: conv-temp
+          image: thalesjolo/conversao-temperatura:v1
+          ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conv-temp
+spec:
+  selector:
+    app: conv-temp
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30000
+  type: NodePort
